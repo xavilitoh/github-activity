@@ -12,8 +12,6 @@ if(args.Length == 0)
     return;
 }
 
-AnsiConsole.Write(new Markup($"[bold yellow]Hello[/] {args[0]} [red]World![/]"));
-
 List<GithubResult> data = new List<GithubResult>();
 // Synchronous
 // Asynchronous
@@ -29,10 +27,10 @@ foreach (var @event in data)
     switch (@event.Type)
     {
         case "PushEvent":
-            AnsiConsole.Write(new Markup($"Pushed [bold yellow]{@event.Payload.Commits?.Count ?? 0}[/] commits on [bold yellow]{@event.Repo?.Name}[/].\n"));
+            AnsiConsole.Write(new Markup($"Pushed [bold yellow]{@event.Payload.Commits?.Count ?? 0}[/] commits to [bold yellow]{@event.Repo?.Name}[/].\n"));
             break;
         case "CreateEvent":
-            AnsiConsole.Write(new Markup($"Created a new [bold yellow]{@event.Payload.RefType}[/] on [bold yellow]{@event.Repo?.Name}[/].\n"));
+            AnsiConsole.Write(new Markup($"Created a new [bold yellow]{@event.Payload.RefType}[/] in [bold yellow]{@event.Repo?.Name}[/].\n"));
             break;
         case "DeleteEvent":
             Console.WriteLine($"Deleted {@event.Repo?.Name}.");
@@ -41,11 +39,14 @@ foreach (var @event in data)
             AnsiConsole.Write(new Markup($"Forked [bold yellow]{@event.Repo?.Name}[/].\n"));
             break;
         case "WatchEvent":
-            AnsiConsole.Write(new Markup($"Started watching [bold yellow]{@event.Repo?.Name}[/].\n"));
+            AnsiConsole.Write(new Markup($"{@event.Payload.Action} watching [bold yellow]{@event.Repo?.Name}[/].\n"));
             break;
         case "PullRequestEvent":
-            AnsiConsole.Write(new Markup($"{@event.Payload.Action} a pull request on [bold yellow]{@event.Repo?.Name}[/].\n"));
+            AnsiConsole.Write(new Markup($"{@event.Payload.Action} a pull request in [bold yellow]{@event.Repo?.Name}[/].\n"));
             break;
+        case "IssueCommentEvent":
+            AnsiConsole.Write(new Markup($"{@event.Payload.Action} a issue comment in [bold yellow]{@event.Repo?.Name}[/].\n"));
+        break;
         default:
             Console.WriteLine($"Unknown event type: {@event.Type}");
             break;
