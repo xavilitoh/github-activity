@@ -1,5 +1,48 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using System.Diagnostics;
+using GitHubActivity.Models;
+using GitHubActivity.Services;
 using Spectre.Console;
+using Spectre.Console.Json;
 
-AnsiConsole.Markup("[underline red]Hello[/] World!");
+if(args.Length == 0)
+{
+    Console.WriteLine("Please provide a name as an argument.");
+    return;
+}
+
+AnsiConsole.Write(new Markup($"[bold yellow]Hello[/] {args[0]} [red]World![/]"));
+
+List<GithubResult> data = new List<GithubResult>();
+// Synchronous
+// Asynchronous
+await AnsiConsole.Status()
+    .StartAsync($"Buscando informacion de {args[0]}...", async ctx => 
+    {
+        data = await GithubService.GetGithubInfo(args[0]);
+    });
+
+foreach (var @event in data)
+{
+    AnsiConsole.Write(new Markup($"[green]{@event.CreatedAt.ToLocalTime()}[/]: "));
+    switch (@event.Type)
+    {
+        case "PushEvent":
+            AnsiConsole.Write(new Markup($"Pushed [bold yellow]{@event.Payload.Commits?.Count ?? 0}[/] commits on [bold yellow]{@event.Repo?.Name}[/].\n"));
+            break;
+        default:
+            Console.WriteLine($"Unknown event type: {@event.Type}");
+            break;
+    }
+    
+}
+
+// var json = new JsonText(GithubService.GetGithubInfo(args[0]).Result);
+//
+// AnsiConsole.Write(
+//     new Panel(json)
+//         .Header("Some JSON in a panel")
+//         .Collapse()
+//         .RoundedBorder()
+//         .BorderColor(Color.Yellow));
