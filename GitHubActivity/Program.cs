@@ -53,12 +53,3 @@ foreach (var @event in data)
     }
     
 }
-
-// var json = new JsonText(GithubService.GetGithubInfo(args[0]).Result);
-//
-// AnsiConsole.Write(
-//     new Panel(json)
-//         .Header("Some JSON in a panel")
-//         .Collapse()
-//         .RoundedBorder()
-//         .BorderColor(Color.Yellow));
