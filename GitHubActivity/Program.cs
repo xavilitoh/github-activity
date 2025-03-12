@@ -1,10 +1,7 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-using System.Diagnostics;
+﻿
 using GitHubActivity.Models;
 using GitHubActivity.Services;
 using Spectre.Console;
-using Spectre.Console.Json;
 
 if(args.Length == 0)
 {
@@ -13,10 +10,9 @@ if(args.Length == 0)
 }
 
 List<GithubResult> data = new List<GithubResult>();
-// Synchronous
-// Asynchronous
+
 await AnsiConsole.Status()
-    .StartAsync($"Buscando informacion de {args[0]}...", async ctx => 
+    .StartAsync($"Fetching information for {args[0]}...", async ctx =>
     {
         data = await GithubService.GetGithubInfo(args[0]);
     });

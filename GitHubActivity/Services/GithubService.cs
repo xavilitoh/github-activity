@@ -2,31 +2,43 @@ using System.Net.Http.Headers;
 using GitHubActivity.Models;
 using Newtonsoft.Json;
 
-namespace GitHubActivity.Services;
-
-public static class GithubService
+namespace GitHubActivity.Services
 {
-    private static readonly HttpClient client = new HttpClient();
-
-    static GithubService()
+    /// <summary>
+    /// Service to interact with the GitHub API.
+    /// </summary>
+    public static class GithubService
     {
-        client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("GithubActivity", "1.0"));
-    }
+        // Static instance of HttpClient for reuse.
+        private static readonly HttpClient client = new HttpClient();
 
-    public static async Task<List<GithubResult>> GetGithubInfo(string userName)
-    {
-        var url = $"https://api.github.com/users/{userName}/events";
-        try
+        // Static constructor to configure default headers.
+        static GithubService()
         {
-            var response = await client.GetAsync(url);
-            response.EnsureSuccessStatusCode();
-            var content = await response.Content.ReadAsStringAsync();
-            var events = JsonConvert.DeserializeObject<List<GithubResult>>(content);
-            return events ?? new List<GithubResult>();
+            client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("GithubActivity", "1.0"));
         }
-        catch (HttpRequestException e)
+
+        /// <summary>
+        /// Gets event information for a GitHub user.
+        /// </summary>
+        /// <param name="userName">GitHub username.</param>
+        /// <returns>A list of GithubResult objects with event information.</returns>
+        /// <exception cref="Exception">Thrown when there is an error fetching data from GitHub.</exception>
+        public static async Task<List<GithubResult>> GetGithubInfo(string userName)
         {
-            throw new Exception($"Error fetching data from GitHub: {e.Message}");
+            var url = $"https://api.github.com/users/{userName}/events";
+            try
+            {
+                var response = await client.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                var content = await response.Content.ReadAsStringAsync();
+                var events = JsonConvert.DeserializeObject<List<GithubResult>>(content);
+                return events ?? new List<GithubResult>();
+            }
+            catch (HttpRequestException e)
+            {
+                throw new Exception($"Error fetching data from GitHub: {e.Message}");
+            }
         }
     }
 }
