@@ -32,3 +32,4 @@ Esto generará el paquete en la carpeta `bin/Release`.
    Reemplaza `<username>` con el nombre de usuario de GitHub para obtener la información deseada.
 
 
+Este proyecto es parte de [GitHub User Activity](https://roadmap.sh/projects/github-user-activity).
