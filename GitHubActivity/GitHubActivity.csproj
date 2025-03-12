@@ -7,7 +7,7 @@
         <Nullable>enable</Nullable>
         <PackAsTool>true</PackAsTool>
         <ToolCommandName>github-activity</ToolCommandName>
-        <AppxPackageOutput>/.nupkg</AppxPackageOutput>
+        <AppxPackageOutput>/nupkg</AppxPackageOutput>
     </PropertyGroup>
 
     <ItemGroup>

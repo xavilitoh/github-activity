@@ -1,58 +1,34 @@
-Para desplegar y ejecutar tu aplicación desde la línea de comandos utilizando el CLI de .NET, sigue estos pasos:
+## Pasos para el despliegue
 
-1. **Empaquetar la aplicación**:
-   Primero, asegúrate de que tu proyecto esté configurado correctamente y que todos los archivos necesarios estén incluidos. Luego, puedes empaquetar tu aplicación utilizando el comando `dotnet publish`.
-
-   ```sh
-   dotnet publish -c Release -o ./publish
-   ```
-
-   Este comando compilará tu aplicación en modo Release y colocará los archivos compilados en la carpeta `./publish`.
-
-2. **Instalar la aplicación**:
-   Una vez que la aplicación esté empaquetada, puedes ejecutarla directamente desde la carpeta de publicación. Navega a la carpeta `./publish` y ejecuta el archivo ejecutable generado.
+1. **Construir el paquete**:
+   Utiliza el comando `dotnet pack` para generar un archivo `.nupkg`.
 
    ```sh
-   cd ./publish
-   ./GitHubActivity
+   dotnet pack --configuration Release
    ```
 
-3. **Documentación del despliegue**:
-   Crea un archivo `README.md` en la raíz de tu proyecto con las instrucciones de despliegue. Aquí tienes un ejemplo de cómo podría verse:
+Esto generará el paquete en la carpeta `bin/Release`.
 
-   ```markdown
-   # Despliegue de GitHubActivity
+2. **Instalar el paquete**:
+   En la terminal, navega a la carpeta donde se generó el paquete y procede a instalarlo con la CLI de `dotnet` usando el siguiente comando:
 
-   ## Requisitos
-   - .NET SDK 6.0 o superior
-
-   ## Pasos para empaquetar y desplegar
-
-   1. **Empaquetar la aplicación**:
-      ```sh
-      dotnet publish -c Release -o ./publish
-      ```
-
-    2. **Navegar a la carpeta de publicación**:
-       ```sh
-       cd ./publish
-       ```
-
-    3. **Ejecutar la aplicación**:
-       ```sh
-       ./GitHubActivity
-       ```
-
-   ## Uso
-   Para ejecutar la aplicación, proporciona un nombre de usuario de GitHub como argumento:
    ```sh
-   ./GitHubActivity <nombre_de_usuario>
+   dotnet tool install --global --add-source {ruta del paquete} GitHubActivity
    ```
 
-   Por ejemplo:
+   Ejemplo:
+
    ```sh
-   ./GitHubActivity octocat
-   ```
+   dotnet tool install --global --add-source ./GitHubActivity/bin/Release/ GitHubActivity
    ```
 
-Guarda este contenido en el archivo `README.md` para que otros desarrolladores puedan seguir las instrucciones de despliegue y ejecución de tu aplicación.
+3. **Ejecutar la CLI de GitHubActivity**:
+   Una vez instalado, puedes ejecutar la herramienta usando el siguiente comando:
+
+   ```sh
+   github-activity <username>
+   ```
+
+   Reemplaza `<username>` con el nombre de usuario de GitHub para obtener la información deseada.
+
+
