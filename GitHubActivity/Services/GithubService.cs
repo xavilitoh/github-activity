@@ -1,6 +1,7 @@
 using System.Net.Http.Headers;
 using GitHubActivity.Models;
 using Newtonsoft.Json;
+using Spectre.Console;
 
 namespace GitHubActivity.Services
 {
@@ -37,7 +38,23 @@ namespace GitHubActivity.Services
             }
             catch (HttpRequestException e)
             {
-                throw new Exception($"Error fetching data from GitHub: {e.Message}");
+                switch (e.StatusCode)
+                {
+                    case System.Net.HttpStatusCode.NotFound:
+                        // Handle 404 Not Found
+                        AnsiConsole.Write(new Markup($"[red]ERROR: User {userName} not found.[/].\n"));
+                        break;
+                    case System.Net.HttpStatusCode.Forbidden:
+                        // Handle 403 Forbidden
+                        AnsiConsole.Write(new Markup($"[red]ERROR: Access to the GitHub API is forbidden. Please check your credentials or rate limits.[/].\n"));
+                        break;
+                    default:
+                        // Handle other HTTP request exceptions
+                        AnsiConsole.Write(new Markup($"[red]ERROR: {e.Message}[/].\n"));
+                        break;
+                }
+
+                return new List<GithubResult>();
             }
         }
     }
