@@ -43,6 +43,9 @@ foreach (var @event in data)
         case "WatchEvent":
             AnsiConsole.Write(new Markup($"Started watching [bold yellow]{@event.Repo?.Name}[/].\n"));
             break;
+        case "PullRequestEvent":
+            AnsiConsole.Write(new Markup($"{@event.Payload.Action} a pull request on [bold yellow]{@event.Repo?.Name}[/].\n"));
+            break;
         default:
             Console.WriteLine($"Unknown event type: {@event.Type}");
             break;
