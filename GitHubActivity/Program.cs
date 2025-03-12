@@ -31,6 +31,18 @@ foreach (var @event in data)
         case "PushEvent":
             AnsiConsole.Write(new Markup($"Pushed [bold yellow]{@event.Payload.Commits?.Count ?? 0}[/] commits on [bold yellow]{@event.Repo?.Name}[/].\n"));
             break;
+        case "CreateEvent":
+            AnsiConsole.Write(new Markup($"Created a new [bold yellow]{@event.Payload.RefType}[/] on [bold yellow]{@event.Repo?.Name}[/].\n"));
+            break;
+        case "DeleteEvent":
+            Console.WriteLine($"Deleted {@event.Repo?.Name}.");
+            break;
+        case "ForkEvent":
+            AnsiConsole.Write(new Markup($"Forked [bold yellow]{@event.Repo?.Name}[/].\n"));
+            break;
+        case "WatchEvent":
+            AnsiConsole.Write(new Markup($"Started watching [bold yellow]{@event.Repo?.Name}[/].\n"));
+            break;
         default:
             Console.WriteLine($"Unknown event type: {@event.Type}");
             break;
