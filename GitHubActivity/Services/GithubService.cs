@@ -42,7 +42,7 @@ namespace GitHubActivity.Services
                 {
                     case System.Net.HttpStatusCode.NotFound:
                         // Handle 404 Not Found
-                        AnsiConsole.Write(new Markup($"[red]ERROR: User {userName} not found.[/].\n"));
+                        AnsiConsole.Write(new Markup($"[red]ERROR: User[/] [maroon]'{userName}'[/] [red]not found.[/].\n"));
                         break;
                     case System.Net.HttpStatusCode.Forbidden:
                         // Handle 403 Forbidden
